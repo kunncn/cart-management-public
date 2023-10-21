@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+    <style></style>
+  </head>
+  <body>
+    <main id="app">
+      <header
+        class="w-full fixed left-0 right-0 z-50 md:w-4/5 px-3 md:px-0 mx-auto py-4 flex justify-between border-b-2 bg-white border-neutral-700"
+      >
+        <div class="brand font-heading">
+          <h3 class="font-bold text-2xl">MMS Solutions</h3>
+          <p class="text-neutral-400">E-commerce</p>
+        </div>
+        <div class="flex items-center">
+          <!-- <input
+            type="text"
+            class="input text-[14px] me-4 w-[147px] border border-neutral-700 sm:w-auto rounded-none"
+            placeholder="back pack or somethings"
+            id="searchInput"
+          /> -->
+          <button id="searchBtn" class="border border-neutral-700 p-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6 stroke-neutral-700 stroke-1"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              />
+            </svg>
+          </button>
+          <button
+            id="cartBtn"
+            class="border animate__animated border-neutral-700 bg-neutral-700 p-3 relative"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6 stroke-white stroke-1"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+              />
+            </svg>
+            <span
+              class="bg-red-500 border-2 border-white text-[9px] text-white px-1 w-6 h-6 text-center flex justify-center items-center rounded-full translate-x-1/2 -translate-y-1/2 absolute top-0 right-0"
+              id="cartBtnCount"
+              >0</span
+            >
+          </button>
+        </div>
+      </header>
+
+      <div id="headerSpacer" class="h-28"></div>
+      <div class="w-full md:w-4/5 mx-auto px-3 md:px-0">
+        <section class="mb-10">
+          <p class="mb-2 text-lg text-neutral-700">Product Categories</p>
+          <div id="categoryLists" class="flex justify-stretch">
+            <button class="category-badge active">All</button>
+          </div>
+        </section>
+
+        <section
+          id="cartUi"
+          class="w-[380px] translate-x-full h-screen bg-white fixed right-0 top-0 z-50 border-neutral-700 border-s-2"
+        >
+          <div class="h-full flex flex-col">
+            <div
+              class="cart-header px-3 py-4 flex justify-between border-b-2 bg-white border-neutral-700"
+            >
+              <div class="">
+                <h3 class="font-bold text-2xl">Shopping Cart</h3>
+                <p class="text-neutral-400">
+                  Your Items Count
+                  <span
+                    class="bg-red-500 text-white text-sm px-2 py-1 rounded"
+                    id="cartCount"
+                    >0</span
+                  >
+                </p>
+              </div>
+
+              <button id="closeCart" class="border border-neutral-700 p-3">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-6 stroke-neutral-700 stroke-1"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div
+              id="cartItems"
+              class="cart-items h-auto overflow-y-scroll flex-grow p-4 overflow-x-hidden"
+            >
+              <div
+                class="h-full hidden last:flex flex-col justify-center items-center"
+              >
+                <img class="w-3/4" src="./public/img/empty-cart.svg" alt="" />
+                <p>There is no item yet !</p>
+              </div>
+            </div>
+
+            <div
+              class="cart-footer px-3 py-4 flex flex-col border-t-2 bg-white border-neutral-700"
+            >
+              <div class="mb-3 text-end">
+                <p class="text-neutral-400">Total Amount</p>
+                <p class="text-3xl">$ <span id="cartTotalAmount">0</span></p>
+              </div>
+              <button
+                id="orderNow"
+                class="block w-full bg-neutral-700 text-white py-3"
+              >
+                Order Now
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="productSection"
+          class="mb-10 grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        ></section>
+
+        <footer
+          class="flex justify-between items-center p-3 bg-neutral-700 text-white"
+        >
+          <p>
+            Copyright &copy; 2023
+            <a class="underline" href="https://mms-it.com">MMS IT</a>
+          </p>
+          <a
+            href="#headerSpacer"
+            id="scrollToTop"
+            class="border border-white p-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75"
+              />
+            </svg>
+          </a>
+        </footer>
+      </div>
+    </main>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
