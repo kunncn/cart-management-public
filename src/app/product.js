@@ -55,6 +55,7 @@ export const createProductCard = ({
   rating: { count, rate },
 }) => {
   const card = document.createElement("div");
+
   const isCartItem = cartItems.querySelector(`[product-id='${id}']`);
 
   card.classList.add("product-card");
@@ -80,7 +81,7 @@ export const createProductCard = ({
         class="rating flex justify-between border-b border-neutral-700 pb-5 mb-5"
         >
         <div class="flex rating-start">${ratingUi(rate)}</div>
-        <p class="rating-text">( ${rate} / ${count} )</p>
+        <p class="rating-text">( ${rate} / 5 )</p>
         </div>
         <p class="font-bold mb-2 font-heading text-xl">
         $ <span>${price}</span>
@@ -118,16 +119,19 @@ export const removeCartAddedBtn = (productId) => {
   btn.classList.remove("bg-neutral-700", "text-white");
 };
 
+const localStorageArr = [];
 const addToCartBtnHandler = (event) => {
   const btn = event.target;
   const currentCart = event.target.closest(".product-card");
   const currentCartImg = currentCart.querySelector("img");
   const currentId = currentCart.getAttribute("data-id");
-
   setCartAddedBtn(currentId);
-
   const currentProduct = products.find((el) => el.id == currentId);
   cartItems.append(createCartUi(currentProduct));
+
+  localStorageArr.push(currentProduct);
+  const jsonStringifyproducts = JSON.stringify(localStorageArr);
+  localStorage.setItem("carts", jsonStringifyproducts);
 
   const img = currentCartImg.getBoundingClientRect();
   const cart = cartBtn.querySelector("svg").getBoundingClientRect();

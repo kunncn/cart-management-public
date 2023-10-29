@@ -19,7 +19,9 @@ import { categories, products } from "./core/variables";
 export class Shop {
   preRender() {
     categoryRender(categories);
-    productRender(products);
+    localStorage.getItem("carts") === null
+      ? productRender(products)
+      : productRender(JSON.parse(localStorage.getItem("carts")));
   }
 
   listener() {
@@ -30,7 +32,6 @@ export class Shop {
     searchBtn.addEventListener("click", () => {
       searchHandler();
     });
-
   }
 
   observer() {
