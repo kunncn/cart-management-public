@@ -97,8 +97,6 @@ export const cartRemoveBtnHandler = (event) => {
     text: "You won't be able to revert this!",
     icon: "warning",
     showCancelButton: true,
-    // confirmButtonColor: "rgb(64,64,64)",
-    // cancelButtonColor: "rgb(245,245,245)",
     cancelButtonText: "Cancel",
     confirmButtonText: "Confirm",
   }).then((result) => {
@@ -107,6 +105,16 @@ export const cartRemoveBtnHandler = (event) => {
       currentCart.addEventListener("animationend", () => {
         currentCart.remove();
         removeCartAddedBtn(productId);
+        const cartItems = JSON.parse(localStorage.getItem("carts")) || [];
+        const itemIdToDelete = Number(
+          event.target.closest(".cart-item").getAttribute("product-id")
+        );
+        const updatedCartItems = cartItems.filter(
+          (item) => item.id !== itemIdToDelete
+        );
+        localStorage.clear();
+        localStorage.setItem("carts", JSON.stringify(updatedCartItems));
+        console.log(updatedCartItems);
       });
     }
   });
@@ -124,7 +132,7 @@ export const cartQuantityIncrementHandler = (event) => {
     currentCartPrice.innerText * currentQuantity.innerText;
 };
 
-export const cartQuantityDecrementHandler = () => {
+export const cartQuantityDecrementHandler = (event) => {
   const currentCart = event.target.closest(".cart-item");
   const currentQuantity = currentCart.querySelector(".cart-q");
   const currentCartPrice = currentCart.querySelector(".original-price");
@@ -145,7 +153,7 @@ export const calculateCartAmountTotal = () => {
 };
 
 export const calculateCartCount = () => {
-  const carts = app.querySelectorAll(".cart-item");
+  const carts = app.querySelectorAll(`[disabled="true"]`);
   return carts.length;
 };
 
@@ -156,7 +164,8 @@ export const cartObserver = () => {
   };
   const observer = new MutationObserver(() => {
     cartTotalAmount.innerText = calculateCartAmountTotal();
-    cartCount.innerText = cartBtnCount.innerText = calculateCartCount();
+    cartCount.innerText = calculateCartCount();
+    cartBtnCount.innerText = cartItems.querySelectorAll(".cart-item").length;
   });
   observer.observe(cartItems, observerOptions);
 };

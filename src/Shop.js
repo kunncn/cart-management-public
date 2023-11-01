@@ -1,4 +1,4 @@
-import { cartObserver } from "./app/cart";
+import { cartObserver, createCartUi } from "./app/cart";
 import { categoryRender } from "./app/category";
 import { productRender } from "./app/product";
 import {
@@ -9,9 +9,12 @@ import {
 } from "./core/handlers";
 import {
   cartBtn,
+  cartBtnCount,
+  cartItems,
   categoryLists,
   closeCart,
   orderNow,
+  productSection,
   searchBtn,
 } from "./core/selectors";
 import { categories, products } from "./core/variables";
@@ -19,9 +22,28 @@ import { categories, products } from "./core/variables";
 export class Shop {
   preRender() {
     categoryRender(categories);
-    localStorage.getItem("carts") === null
-      ? productRender(products)
-      : productRender(JSON.parse(localStorage.getItem("carts")));
+    const carts = localStorage.getItem("carts");
+    if (carts !== null) {
+      const jsonParsedCarts = JSON.parse(carts);
+      jsonParsedCarts.forEach((el) => productRender(products, jsonParsedCarts));
+      const disabledProductIds = Array.from(
+        productSection.querySelectorAll('[disabled="true"]')
+      ).map((el) =>
+        Number(el.closest(".product-card").getAttribute("data-id"))
+      );
+
+      const filteredProducts = products.filter((product) =>
+        disabledProductIds.includes(product.id)
+      );
+
+      cartBtnCount.innerText = filteredProducts.length;
+
+      filteredProducts.forEach((product) =>
+        cartItems.append(createCartUi(product))
+      );
+    } else {
+      productRender(products);
+    }
   }
 
   listener() {
@@ -39,7 +61,6 @@ export class Shop {
   }
 
   init() {
-    console.log("Shop App Start");
     this.observer();
     this.preRender();
     this.listener();

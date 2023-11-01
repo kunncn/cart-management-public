@@ -7,16 +7,19 @@ import {
   cartUi,
   productSection,
 } from "../core/selectors";
-import { products } from "../core/variables";
+import { localStorageArr, products } from "../core/variables";
 import {
   calculateCartAmountTotal,
   calculateCartCount,
   createCartUi,
 } from "./cart";
 
-export const productRender = (list) => {
+export const productRender = (list, idFromLocalStorage = null) => {
   productSection.innerHTML = "";
-  list.forEach((el) => productSection.append(createProductCard(el)));
+
+  list.forEach((el) =>
+    productSection.append(createProductCard(el, idFromLocalStorage))
+  );
 };
 
 export const ratingUi = (rate) => {
@@ -46,16 +49,11 @@ export const ratingUi = (rate) => {
   return result;
 };
 
-export const createProductCard = ({
-  id,
-  image,
-  title,
-  description,
-  price,
-  rating: { count, rate },
-}) => {
+export const createProductCard = (
+  { id, image, title, description, price, rating: { count, rate } },
+  jsonParsedCarts
+) => {
   const card = document.createElement("div");
-
   const isCartItem = cartItems.querySelector(`[product-id='${id}']`);
 
   card.classList.add("product-card");
@@ -97,7 +95,8 @@ export const createProductCard = ({
     </div>
     
     `;
-
+  jsonParsedCarts !== null &&
+    jsonParsedCarts.filter((el) => setCartAddedBtn(el.id));
   const addToCartBtn = card.querySelector(".add-to-cart-btn");
   addToCartBtn.addEventListener("click", addToCartBtnHandler);
 
@@ -106,20 +105,20 @@ export const createProductCard = ({
 
 export const setCartAddedBtn = (productId) => {
   const btn = app.querySelector(`[data-id='${productId}'] .add-to-cart-btn`);
-
-  btn.innerText = "Added";
-  btn.toggleAttribute("disabled");
-  btn.classList.add("bg-neutral-700", "text-white");
+  if (btn !== null) {
+    btn.innerText = "Added";
+    btn.setAttribute("disabled", "true");
+    btn.classList.add("bg-neutral-700", "text-white");
+  }
 };
 
 export const removeCartAddedBtn = (productId) => {
   const btn = app.querySelector(`[data-id='${productId}'] .add-to-cart-btn`);
   btn.innerText = "Add to Cart";
-  btn.toggleAttribute("disabled");
+  btn.removeAttribute("disabled");
   btn.classList.remove("bg-neutral-700", "text-white");
 };
 
-const localStorageArr = [];
 const addToCartBtnHandler = (event) => {
   const btn = event.target;
   const currentCart = event.target.closest(".product-card");
@@ -128,10 +127,15 @@ const addToCartBtnHandler = (event) => {
   setCartAddedBtn(currentId);
   const currentProduct = products.find((el) => el.id == currentId);
   cartItems.append(createCartUi(currentProduct));
-
   localStorageArr.push(currentProduct);
   const jsonStringifyproducts = JSON.stringify(localStorageArr);
-  localStorage.setItem("carts", jsonStringifyproducts);
+  const c = JSON.parse(localStorage.getItem("carts"));
+  if (c === null) {
+    localStorage.setItem("carts", jsonStringifyproducts);
+  } else {
+    const arr = c.concat(JSON.parse(jsonStringifyproducts));
+    localStorage.setItem("carts", JSON.stringify(arr));
+  }
 
   const img = currentCartImg.getBoundingClientRect();
   const cart = cartBtn.querySelector("svg").getBoundingClientRect();

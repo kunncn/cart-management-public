@@ -11,7 +11,6 @@ import {
 import { products } from "./variables";
 
 export const searchBtnHandler = () => {};
-
 export const cartBtnHandler = () => {
   cartUi.classList.toggle("translate-x-full");
   cartUi.classList.add("duration-300");
@@ -23,9 +22,6 @@ export const categoryListsHandler = (event) => {
     const currentCategory = currentCategoryBtn.innerText.toLowerCase();
     const lastActiveCategoryBtn = app.querySelector(".category-badge.active");
     lastActiveCategoryBtn.classList.toggle("active");
-
-    // console.log(currentCategory);
-
     currentCategoryBtn.classList.add("active");
     productRender(
       products.filter(
@@ -45,7 +41,6 @@ export const orderNowHandler = (event) => {
     cancelButtonText: "Cancel",
     confirmButtonText: "Confirm",
   }).then((result) => {
-    // customer_id, product_id, quantity, total, time
     if (result.isConfirmed) {
       const customer_id = Math.floor(Math.random() * 10000);
       const total = parseFloat(cartTotalAmount.innerText);
@@ -63,6 +58,7 @@ export const orderNowHandler = (event) => {
         el.remove();
 
         removeCartAddedBtn(productId);
+        localStorage.clear();
       });
 
       const order = { customer_id, time, order_items, total };

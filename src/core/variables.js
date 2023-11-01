@@ -213,3 +213,5 @@ export const categories = [
   "men's clothing",
   "women's clothing",
 ];
+
+export const localStorageArr = [];
