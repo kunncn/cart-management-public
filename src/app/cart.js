@@ -105,16 +105,18 @@ export const cartRemoveBtnHandler = (event) => {
       currentCart.addEventListener("animationend", () => {
         currentCart.remove();
         removeCartAddedBtn(productId);
-        const cartItems = JSON.parse(localStorage.getItem("carts")) || [];
+
+        const itemsFromLs = JSON.parse(localStorage.getItem("carts"));
         const itemIdToDelete = Number(
           event.target.closest(".cart-item").getAttribute("product-id")
         );
-        const updatedCartItems = cartItems.filter(
+        const updatedCartItems = itemsFromLs.filter(
           (item) => item.id !== itemIdToDelete
         );
         localStorage.clear();
-        localStorage.setItem("carts", JSON.stringify(updatedCartItems));
-        console.log(updatedCartItems);
+        console.log(cartItems.querySelector(".cart-item"));
+        cartItems.querySelector(".cart-item") !== null &&
+          localStorage.setItem("carts", JSON.stringify(updatedCartItems));
       });
     }
   });
