@@ -1,5 +1,4 @@
 import Swal from "sweetalert2";
-import { cartBtnHandler } from "../core/handlers";
 import {
   cartBtnCount,
   cartCount,
@@ -114,7 +113,6 @@ export const cartRemoveBtnHandler = (event) => {
           (item) => item.id !== itemIdToDelete
         );
         localStorage.clear();
-        console.log(cartItems.querySelector(".cart-item"));
         cartItems.querySelector(".cart-item") !== null &&
           localStorage.setItem("carts", JSON.stringify(updatedCartItems));
       });

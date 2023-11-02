@@ -1,18 +1,6 @@
-import {
-  cartBtn,
-  cartBtnCount,
-  cartCount,
-  cartItems,
-  cartTotalAmount,
-  cartUi,
-  productSection,
-} from "../core/selectors";
+import { cartBtn, cartItems, productSection } from "../core/selectors";
 import { localStorageArr, products } from "../core/variables";
-import {
-  calculateCartAmountTotal,
-  calculateCartCount,
-  createCartUi,
-} from "./cart";
+import { createCartUi } from "./cart";
 
 export const productRender = (list, idFromLocalStorage = null) => {
   productSection.innerHTML = "";
@@ -50,7 +38,7 @@ export const ratingUi = (rate) => {
 };
 
 export const createProductCard = (
-  { id, image, title, description, price, rating: { count, rate } },
+  { id, image, title, description, price, rating: { rate } },
   jsonParsedCarts
 ) => {
   const card = document.createElement("div");
