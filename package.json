@@ -13,10 +13,11 @@
     "postcss": "^8.4.31",
     "sass": "^1.69.3",
     "tailwindcss": "^3.3.3",
-    "vite": "^4.4.12"
+    "vite": "^4.5.3"
   },
   "dependencies": {
     "animate.css": "^4.1.1",
-    "sweetalert2": "^11.7.32"
+    "braces": "^3.0.3",
+    "sweetalert2": "^11.12.4"
   }
 }
